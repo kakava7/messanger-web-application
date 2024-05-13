@@ -9,6 +9,8 @@ import {
   useMessageContext,
 } from "stream-chat-react";
 
+import { EmojiPicker } from "stream-chat-react/emojis";
+
 import { ChannelInner, CreateChannel, EditChannel } from "./";
 
 const ChannelContainer = ({
@@ -47,7 +49,7 @@ const ChannelContainer = ({
 
   return (
     <div className="channel__container">
-      <Channel>
+      <Channel EmojiPicker={EmojiPicker}>
         <ChannelInner setIsEditing={setIsEditing} />
       </Channel>
     </div>
