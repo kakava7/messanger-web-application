@@ -6,7 +6,7 @@ import { CloseCreateChannel } from "../assets/CloseCreateChannel";
 
 const ChannelNameInput = ({ channelName = "", setChannelName }) => {
   const handleChange = (event) => {
-    event.preventDefualt();
+    event.preventDefault();
 
     setChannelName(event.target.value);
   };
@@ -17,7 +17,7 @@ const ChannelNameInput = ({ channelName = "", setChannelName }) => {
       <input
         value={channelName}
         onChange={handleChange}
-        placeholder="название-канала"
+        placeholder="channel-name"
       />
       <p>Добавить участников</p>
     </div>
@@ -27,7 +27,27 @@ const ChannelNameInput = ({ channelName = "", setChannelName }) => {
 const CreateChannel = ({ createType, setIsCreating }) => {
   const { client, setActiveChannel } = useChatContext();
   const [selectedUsers, setSelectedUsers] = useState([client.userID || ""]);
-  const { channelName, setChannelName } = useState("");
+  const [channelName, setChannelName] = useState("");
+
+  const createChannel = async (e) => {
+    e.preventDefault();
+
+    try {
+      const newChannel = await client.channel(createType, channelName, {
+        name: channelName,
+        members: selectedUsers,
+      });
+
+      await newChannel.watch();
+
+      setChannelName("");
+      setIsCreating(false);
+      setSelectedUsers([client.userID]);
+      setActiveChannel(newChannel);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="create-channel__container">
@@ -46,6 +66,11 @@ const CreateChannel = ({ createType, setIsCreating }) => {
         />
       )}
       <UserList setSelectedUsers={setSelectedUsers} />
+      <div className="create-channel__button-wrapper" onClick={createChannel}>
+        <p>
+          {createType === "team" ? "Создать канал" : "Создать группу сообщений"}
+        </p>
+      </div>
     </div>
   );
 };

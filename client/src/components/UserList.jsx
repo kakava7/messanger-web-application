@@ -21,7 +21,7 @@ const UserItem = ({ user, setSelectedUsers }) => {
   const handleSelect = () => {
     if (selected) {
       setSelectedUsers((prevUsers) =>
-        prevUsers.filter((prevUsers) => prevUsers != user.id)
+        prevUsers.filter((prevUsers) => prevUsers !== user.id)
       );
     } else {
       setSelectedUsers((prevUsers) => [...prevUsers, user.id]);
@@ -46,6 +46,7 @@ const UserList = ({ setSelectedUsers }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listEmpty, setListEmpty] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -66,13 +67,27 @@ const UserList = ({ setSelectedUsers }) => {
           setListEmpty(true);
         }
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
       setLoading(false);
     };
 
     if (client) getUsers();
   }, []);
+
+  if (error) {
+    <ListContainer>
+      <div className="user-list__message">
+        Ошибка загрузки, пожалуйста, обновите страницу
+      </div>
+    </ListContainer>;
+  }
+
+  if (listEmpty) {
+    <ListContainer>
+      <div className="user-list__message">Пользователи не найдены!</div>
+    </ListContainer>;
+  }
 
   return (
     <ListContainer>

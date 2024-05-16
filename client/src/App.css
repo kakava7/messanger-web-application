@@ -301,6 +301,10 @@ body {
   padding: 0;
 }
 
+.str-chat {
+  color: white;
+}
+
 .str-chat.messaging {
   background-color: #005fff;
 }

@@ -40,7 +40,7 @@ const ChannelContainer = ({
 
   const EmptyState = () => (
     <div className="channel-empty__container">
-      <p className="channel-empty__first">Это исто рия начала вашего чата</p>
+      <p className="channel-empty__first">Это история начала вашего чата</p>
       <p className="channel-empty__second">
         Вы можете отправлять сообщения, стикеры, ссылки и другое
       </p>
@@ -49,7 +49,7 @@ const ChannelContainer = ({
 
   return (
     <div className="channel__container">
-      <Channel EmojiPicker={EmojiPicker}>
+      <Channel EmojiPicker={EmojiPicker} EmptyStateIndicator={EmptyState}>
         <ChannelInner setIsEditing={setIsEditing} />
       </Channel>
     </div>
